@@ -1,4 +1,4 @@
-// 확장 아이콘(PNG)과 앱 아이콘(icns)을 그린다. 결과물은 저장소에 함께 올린다.
+// 앱 아이콘(app/AppIcon.icns)을 그린다. 결과물은 저장소에 함께 올린다.
 //
 //   swift scripts/make-icons.swift
 //
@@ -52,14 +52,7 @@ func png(size: Int, inset: CGFloat) -> Data {
 
 let fm = FileManager.default
 
-// 확장: 툴바용은 여백 없이 꽉 채운다.
-let extIcons = root.appendingPathComponent("extension/icons")
-try fm.createDirectory(at: extIcons, withIntermediateDirectories: true)
-for size in [16, 32, 48, 128] {
-    try png(size: size, inset: 0.02).write(to: extIcons.appendingPathComponent("icon\(size).png"))
-}
-
-// 앱: macOS 아이콘 격자에 맞춰 둘레에 여백을 둔다.
+// macOS 아이콘 격자에 맞춰 둘레에 여백을 둔다.
 let iconset = fm.temporaryDirectory.appendingPathComponent("AppIcon.iconset")
 try? fm.removeItem(at: iconset)
 try fm.createDirectory(at: iconset, withIntermediateDirectories: true)
@@ -72,4 +65,4 @@ iconutil.executableURL = URL(fileURLWithPath: "/usr/bin/iconutil")
 iconutil.arguments = ["-c", "icns", iconset.path, "-o", root.appendingPathComponent("app/AppIcon.icns").path]
 try iconutil.run()
 iconutil.waitUntilExit()
-print("확장 아이콘: \(extIcons.path)\n앱 아이콘: app/AppIcon.icns")
+print("앱 아이콘: app/AppIcon.icns")

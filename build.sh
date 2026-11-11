@@ -25,14 +25,13 @@ compile() {
   rm -f "${parts[@]}"
 }
 
-compile ChatLamp app/Shared/*.swift app/ChatLamp/*.swift
-compile chatlamp-host app/Shared/*.swift app/Host/main.swift
+compile ChatLamp app/ChatLamp/*.swift
 
 cp app/Info.plist "$APP/Contents/"
 cp app/AppIcon.icns "$APP/Contents/Resources/"
 
 # 인증서 없이 이 맥에서만 통하는 서명(ad-hoc). 로그인 항목 등록에 서명이 필요하다.
-codesign --force --sign - "$APP/Contents/MacOS/chatlamp-host"
+# 서명이 빌드마다 달라지므로, 다시 빌드하면 손쉬운 사용 권한을 다시 켜야 한다.
 codesign --force --sign - "$APP"
 
 echo "만들었습니다: $APP ($ARCHS)"

@@ -4,14 +4,14 @@ import ServiceManagement
 /// 메뉴 막대 아이콘과 그 메뉴.
 ///
 /// 안 읽은 메시지가 있으면 말풍선을 초록색으로 채우고 옆에 개수를 적는다.
-/// 없으면 메뉴 막대 색을 따르는 빈 말풍선, 크롬이나 Google Chat이 꺼져 있으면 흐린 말풍선.
+/// 없으면 메뉴 막대 색을 따르는 빈 말풍선, Google Chat 앱이 꺼져 있거나 권한이 없으면 흐린 말풍선.
 final class StatusController: NSObject, NSMenuDelegate {
     static let readmeURL = URL(string: "https://github.com/cacaocoffee/mac-google-chat#readme")!
     static let showCountKey = "showCount"
 
     private let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let menu = NSMenu()
-    private var state = LampState(level: .disconnected, count: nil)
+    private var state = LampState(level: .noPermission, count: nil)
 
     private var showCount: Bool {
         get { UserDefaults.standard.bool(forKey: Self.showCountKey) }
@@ -31,7 +31,7 @@ final class StatusController: NSObject, NSMenuDelegate {
 
         let lit = state.level == .alert
         button.image = Self.icon(lit: lit)
-        button.appearsDisabled = state.level <= .closed
+        button.appearsDisabled = state.level == .noPermission || state.level == .closed
 
         if lit, showCount, let count = state.count, count > 0 {
             button.title = count > 99 ? "99+" : String(count)
@@ -62,7 +62,7 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     static func describe(_ state: LampState) -> String {
         switch state.level {
-        case .disconnected: return "크롬 확장 프로그램과 연결되지 않음"
+        case .noPermission: return "손쉬운 사용 권한이 필요함"
         case .closed: return "Google Chat이 열려 있지 않음"
         case .unknown: return "새 메시지가 있는지 알 수 없음"
         case .none: return "새 메시지 없음"
@@ -74,8 +74,8 @@ final class StatusController: NSObject, NSMenuDelegate {
 
     private static func hint(_ level: LampLevel) -> String? {
         switch level {
-        case .disconnected: return "크롬에 ChatLamp 확장 프로그램을 설치했는지 확인하세요"
-        case .unknown: return "Google Chat 창을 새로고침하면 다시 확인합니다"
+        case .noPermission: return "Dock의 Google Chat 배지를 읽으려면 권한을 허용하세요"
+        case .closed: return "Google Chat 크롬 앱을 열어 두면 확인합니다"
         default: return nil
         }
     }
@@ -90,6 +90,9 @@ final class StatusController: NSObject, NSMenuDelegate {
             let hintItem = menu.addItem(withTitle: hint, action: nil, keyEquivalent: "")
             hintItem.isEnabled = false
             hintItem.indentationLevel = 1
+        }
+        if !DockBadgeReader.isTrusted {
+            add("손쉬운 사용 권한 허용…", #selector(requestAccessibility))
         }
         menu.addItem(.separator())
 
@@ -109,6 +112,11 @@ final class StatusController: NSObject, NSMenuDelegate {
         let menuItem = menu.addItem(withTitle: title, action: action, keyEquivalent: key)
         menuItem.target = self
         return menuItem
+    }
+
+    @objc private func requestAccessibility() {
+        DockBadgeReader.requestPermission()
+        DockBadgeReader.openPermissionSettings()
     }
 
     @objc private func openGoogleChat() {
