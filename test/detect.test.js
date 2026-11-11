@@ -31,7 +31,7 @@ test('판단: 파비콘이 답을 주면 그것을 따르고 개수는 배지에
   assert.deepEqual([s.level, s.count, s.via], ['alert', 4, 'favicon']);
 });
 
-test('판단: 파비콘이 다 읽음이면 배지 숫자가 있어도 불을 켜지 않는다', () => {
+test('판단: 파비콘이 다 읽음이면 배지 숫자가 있어도 새 메시지 없음', () => {
   const s = judge({ faviconHref: 'a/logo_favicon_no_dot_64px.png', badge: 2, sidebarCount: 2, title: '' });
   assert.deepEqual([s.level, s.count], ['none', null]);
 });

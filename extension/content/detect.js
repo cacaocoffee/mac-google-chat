@@ -56,9 +56,9 @@
   /**
    * 신호를 합쳐 탭 하나의 상태를 정한다.
    *
-   * 불을 켤지는 파비콘 → Dock 배지 → 왼쪽 목록 → 탭 제목 순으로, 먼저 답을 주는 것을 따른다.
+   * 아이콘을 초록색으로 바꿀지는 파비콘 → Dock 배지 → 왼쪽 목록 → 탭 제목 순으로, 먼저 답을 주는 것을 따른다.
    * 파비콘을 맨 앞에 두는 이유: 창이 가려져도 바뀌고, Google이 「알릴 만한 것이 있다」고 정한 결과라서다.
-   * 개수는 불이 켜졌을 때만, 숫자를 주는 신호 가운데 처음 나오는 양수를 쓴다.
+   * 개수는 안 읽은 메시지가 있다고 판단했을 때만, 숫자를 주는 신호 가운데 처음 나오는 양수를 쓴다.
    *
    * @param {{faviconHref: ?string, badge: (number|'flag'|undefined), sidebarCount: ?number, title: ?string}} input
    *   badge는 페이지가 navigator.setAppBadge로 단 값. 'flag'는 숫자 없이 점만 단 경우, undefined는 아직 호출이 없는 경우.

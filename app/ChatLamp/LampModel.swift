@@ -11,7 +11,7 @@ enum LampLevel: Int, Comparable {
     case unknown
     /// 안 읽은 메시지 없음.
     case none
-    /// 안 읽은 메시지 있음. 아이콘에 불이 들어온다.
+    /// 안 읽은 메시지 있음. 아이콘이 초록색으로 바뀐다.
     case alert
 
     init?(payload value: String) {
