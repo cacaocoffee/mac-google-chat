@@ -2,7 +2,10 @@
 // 앱과는 크롬 네이티브 메시징으로 연결한다. 크롬이 앱 안의 chatlamp-host를 실행해 준다.
 
 const HOST = 'io.github.cacaocoffee.chatlamp';
-const TAB_STALE_MS = 60_000; // 이 시간 동안 소식이 없는 탭은 닫힌 것으로 본다
+// 이 시간 동안 소식이 없는 탭은 닫힌 것으로 본다. 크롬은 5분 넘게 가려진 탭의 반복 타이머를
+// 1분에 한 번으로 늦추므로, 뒤에 깔린 탭이 지워지지 않도록 그보다 넉넉하게 둔다.
+// 탭을 닫거나 다른 주소로 옮기는 경우는 tabs.onRemoved와 pagehide로 바로 지운다.
+const TAB_STALE_MS = 180_000;
 const RESEND_MS = 25_000; // 바뀐 것이 없어도 앱에 다시 보낸다. 앱은 90초 동안 소식이 없으면 끊긴 것으로 본다
 const LEVELS = ['closed', 'unknown', 'none', 'alert']; // 뒤로 갈수록 우선한다
 

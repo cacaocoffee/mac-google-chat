@@ -4,7 +4,7 @@
 
   const { judge, readSidebarCount } = globalThis.ChatLampDetect;
   const POLL_MS = 5000; // 왼쪽 목록 숫자는 이 간격으로 다시 읽는다
-  const RESEND_MS = 20000; // 바뀐 것이 없어도 이 간격으로 다시 알린다. background.js는 60초 동안 소식이 없는 탭을 지운다
+  const RESEND_MS = 20000; // 바뀐 것이 없어도 이 간격으로 다시 알린다. background.js는 3분 동안 소식이 없는 탭을 지운다
 
   let badge; // 페이지가 navigator.setAppBadge로 단 값. 아직 호출이 없으면 undefined
   let lastSent = '';
