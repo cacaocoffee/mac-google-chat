@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>ChatLamp</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon32.png" alt="" width="20" height="20">
+    <h1>ChatLamp</h1>
+  </header>
+
+  <dl>
+    <dt>지금 상태</dt>
+    <dd id="level">확인 중…</dd>
+    <dt>메뉴 막대 앱</dt>
+    <dd id="app">확인 중…</dd>
+  </dl>
+  <p id="hint" hidden></p>
+
+  <details id="detail">
+    <summary>탭별 판단 근거</summary>
+    <div id="tabs"></div>
+  </details>
+
+  <script src="popup.js"></script>
+</body>
+</html>
